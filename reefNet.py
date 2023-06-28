@@ -1,7 +1,6 @@
 ## local implementation of ReefNet Pacific Atoll segmentation using UNet architecture
 ## colab implementation: https://colab.research.google.com/drive/1NeM0HsvqyCEFnhzhlucrCa5E3RlR4_hC?usp=sharing
 ##author: Gordon Doore, Drew Hinton, Sameer Khan
-##code adapted from ____
 ##01/22/2023
 
 #imports and dependencies
@@ -15,6 +14,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from keras import backend as K
 from sklearn.utils import class_weight
+from keras.metrics import MeanIoU
 
 X_SIZE = 448
 Y_SIZE = 448
@@ -139,7 +139,30 @@ def evaluateModel(pathToModel, model, X_test, y_test):
     model = model.load_weights(pathToModel)
     y_pred = model.predict(X_test)
     y_pred = np.argmax(y_pred, axis = 3)
-    return m_IoU, v_IoU, r_IoU, o_IoU, f1_m #maybe add class specific f1 as well?
+
+    n_classes = 3
+    testIndex = 3
+    IOU_keras = MeanIoU(num_classes=n_classes)  
+    iou1 = IOU_keras.update_state(y_test[:,:,:,0], np.around(y_pred[:,:,:,0],decimals=0))
+    res1 = IOU_keras.result().numpy()
+
+    iou2 = IOU_keras.update_state(y_test[:,:,:,1], np.around(y_pred[:,:,:,1],decimals=0))
+    res2 = IOU_keras.result().numpy()
+
+    iou3 = IOU_keras.update_state(y_test[:,:,:,2], np.around(y_pred[:,:,:,2],decimals=0))
+    res3 = IOU_keras.result().numpy()
+
+    v_IoU = res1
+    r_IoU = res2
+    o_IoU = res3
+    m_IoU = (res1+res2+res3)/3
+
+
+    #F1 score
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['acc',f1_m,precision_m, recall_m])
+    loss, accuracy, f1_score, precision, recall = model.evaluate(y_test, y_pred, verbose=0)
     
 
-#more to come
+
+    return m_IoU, v_IoU, r_IoU, o_IoU, f1_score, loss, accuracy, precision, recall #maybe add class specific f1 as well?
+    
