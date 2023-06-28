@@ -209,7 +209,7 @@ def trainModel():
                         validation_data=(X_test, y_test),
                         shuffle=False)
 
-    model.save('aiZoom-k-means-augment-5.hdf5')
+    model.save('trained_models/aiZoom-k-means-augment-5.hdf5')
     return history, model, X_test, y_test
 
 def evaluateModel(pathToModel, model, X_test, y_test):
