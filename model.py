@@ -1,3 +1,4 @@
+#Olaf Ronneberger, Philipp Fischer, and Thomas Brox, 2015
 #defines model and utility functions
 import tensorflow as tf
 from tensorflow import keras
