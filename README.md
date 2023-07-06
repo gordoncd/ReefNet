@@ -100,6 +100,19 @@ To implement the model within a Google Colaboratory notebook, follow these steps
 ![output1](example_output/aiZoom-atolls-w-kmeans-8-34.png)
 ![output2](example_output/aiZoom-atolls-w-kmeans-8-99.png)
 
+## Results:
+
+In summary, a Mean IoU of 0.94 indicates a high level of accuracy in terms of pixel-wise segmentation, while an F1 score of 0.84 suggests a balanced performance in terms of precision and recall for the semantic segmentation task.
+
+Classwise Metrics:
+
+vegetation IoU: 0.9260583
+reef flat IoU: 0.9212005
+ocean IoU: 0.9738322
+Mean IoU: 0.9403636455535889
+
+Happy with this outcome, could be fun to try to implement segformer or ResNet FCN
+
 ## References
 
 [1] Ronneberger, O., Fischer, P., & Brox, T. (2015). U-Net: Convolutional Networks for Biomedical Image Segmentation. In *Medical Image Computing and Computer-Assisted Intervention – MICCAI 2015* (pp. 234–241). Springer International Publishing.
